@@ -16,9 +16,10 @@ public class World {
 	public void letTimePass(){
 		
 		makeNewCreatures();
-		//eatThings();
-		//creaturesGetOlder();
-		//purgeTheDead();		
+//		moveCreatures();
+//		eatThings();
+//		creaturesGetOlder();
+//		purgeTheDead();		
 	}
 	
 	public void makeNewCreatures() {

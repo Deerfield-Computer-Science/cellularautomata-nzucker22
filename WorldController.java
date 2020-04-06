@@ -24,6 +24,9 @@ public class WorldController extends GraphicsProgram {
 		theWorld = new World(20,20);
 		theWorld.getCreatureList().add( new Grass( new Location(3,6), theWorld ));
 		theWorld.getCreatureList().add( new Grass( new Location(4,6), theWorld ));
+		theWorld.getCreatureList().add( new Cow( new Location(1,1), theWorld ));
+		theWorld.getCreatureList().add( new Lion( new Location(5,6), theWorld ));
+		theWorld.getCreatureList().add( new Lion( new Location(6,6), theWorld ));
 		theWorldCanvas = this.getGCanvas();
 	}
 	
@@ -31,7 +34,7 @@ public class WorldController extends GraphicsProgram {
 		drawWorld();
 		for(int i=0; i<3;i++){
 			theWorld.letTimePass();
-			pause(500);
+			pause(2000);
 			drawWorld();
 		}
 	}	
