@@ -1,7 +1,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
-public abstract class LifeForm {
+public abstract class BackupLifeForm {
 	
 	protected World myWorld;
 	protected int myLifeSpan;
@@ -11,7 +11,7 @@ public abstract class LifeForm {
 	protected boolean alive;
 	
 	// lifeform constructors
-	public LifeForm(int myLifeSpan, Location myLocation, Color myColor, World myWorld) {
+	public BackupLifeForm(int myLifeSpan, Location myLocation, Color myColor, World myWorld) {
 		super();
 		this.myLifeSpan = myLifeSpan;
 		this.myLocation = myLocation;
@@ -20,7 +20,7 @@ public abstract class LifeForm {
 		alive = true;
 	}
 	
-	public LifeForm(Location myLocation, World myWorld) {
+	public BackupLifeForm(Location myLocation, World myWorld) {
 		super();
 		this.myWorld = myWorld;
 		this.myLocation = myLocation;

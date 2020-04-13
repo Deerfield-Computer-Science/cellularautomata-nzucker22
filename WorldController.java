@@ -55,7 +55,7 @@ public class WorldController extends GraphicsProgram {
 	}
 	
 	public void drawCreatures(){
-		for(LifeForm x: theWorld.getCreatureList()){
+		for(BackupLifeForm x: theWorld.getCreatureList()){
 			GRect r = new GRect (x.getMyLocation().getX()*10, x.getMyLocation().getY()*10,10,10);
 			r.setFillColor(x.getMyColor());
 			r.setFilled(true);
