@@ -7,5 +7,9 @@ public class InfectedSymptomatic extends Person {
 		this.myColor = Color.RED;
 		this.myType = 0;
 	}
+	
+	public void move() {
+		
+	}
 
 }

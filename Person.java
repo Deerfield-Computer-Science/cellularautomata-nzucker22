@@ -26,8 +26,6 @@ public abstract class Person {
 	public boolean isDead(){
 		return !alive;
 	}
-	
-	
 
 	public World getMyWorld() {
 		return myWorld;
