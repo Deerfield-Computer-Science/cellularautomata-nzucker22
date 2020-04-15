@@ -26,15 +26,21 @@ public class WorldController extends GraphicsProgram {
 		theWorld.getpopList().add( new Healthy( new Location(4,6), theWorld ));
 		theWorld.getpopList().add( new Healthy( new Location(1,1), theWorld ));
 		theWorld.getpopList().add( new Healthy( new Location(5,6), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(2,6), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(4,9), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(3,7), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(8,1), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(6,5), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(7,7), theWorld ));
 		theWorld.getpopList().add( new InfectedAsymptomatic( new Location(6,6), theWorld ));
 		theWorldCanvas = this.getGCanvas();
 	}
 	
 	public void runWorld(){
 		drawWorld();
-		for(int i=0; i<3;i++){
+		for(int i=0; i<1;i++){
 			theWorld.letTimePass(theWorld);
-			pause(2000);
+			pause(1000);
 			drawWorld();
 		}
 	}	

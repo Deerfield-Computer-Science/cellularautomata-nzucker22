@@ -9,6 +9,7 @@ public abstract class Person {
 	protected int myTsi;
 	protected int myType;
 	protected int myAge;
+//	protected int myJob;
 	protected boolean alive;
 	
 	public Person(Location myLocation, World myWorld) {
@@ -16,6 +17,15 @@ public abstract class Person {
 		this.myLocation = myLocation;
 		this.myWorld = myWorld;
 		this.myAge = (int)(Math.random()*3);
+//		if(myAge==0) {
+//			myJob=0;
+//		}
+//		if(myAge==1) {
+//			double prob = Math.random();
+//		}
+//		if(myAge==3) {
+//			myJob=65;
+//		}
 		alive = true;
 	}
 	
