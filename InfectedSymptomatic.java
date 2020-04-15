@@ -2,10 +2,11 @@ import java.awt.Color;
 
 public class InfectedSymptomatic extends Person {
 	
-	public InfectedSymptomatic(World w, Location loc) {
-		super(w,loc);
+	public InfectedSymptomatic(Location loc, World w) {
+		super(loc,w);
 		this.myColor = Color.RED;
 		this.myType = 0;
+		this.myTsi = 0;
 	}
 	
 	public void move() {

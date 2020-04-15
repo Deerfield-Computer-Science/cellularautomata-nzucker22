@@ -22,18 +22,18 @@ public class WorldController extends GraphicsProgram {
 	
 	public void setUpWorld(){
 		theWorld = new World(20,20);
-		theWorld.getCreatureList().add( new Grass( new Location(3,6), theWorld ));
-		theWorld.getCreatureList().add( new Grass( new Location(4,6), theWorld ));
-		theWorld.getCreatureList().add( new Cow( new Location(1,1), theWorld ));
-		theWorld.getCreatureList().add( new Lion( new Location(5,6), theWorld ));
-		theWorld.getCreatureList().add( new Lion( new Location(6,6), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(3,6), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(4,6), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(1,1), theWorld ));
+		theWorld.getpopList().add( new Healthy( new Location(5,6), theWorld ));
+		theWorld.getpopList().add( new InfectedAsymptomatic( new Location(6,6), theWorld ));
 		theWorldCanvas = this.getGCanvas();
 	}
 	
 	public void runWorld(){
 		drawWorld();
 		for(int i=0; i<3;i++){
-			theWorld.letTimePass();
+			theWorld.letTimePass(theWorld);
 			pause(2000);
 			drawWorld();
 		}
@@ -55,7 +55,7 @@ public class WorldController extends GraphicsProgram {
 	}
 	
 	public void drawCreatures(){
-		for(BackupLifeForm x: theWorld.getCreatureList()){
+		for(Person x: theWorld.getpopList()){
 			GRect r = new GRect (x.getMyLocation().getX()*10, x.getMyLocation().getY()*10,10,10);
 			r.setFillColor(x.getMyColor());
 			r.setFilled(true);

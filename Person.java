@@ -6,17 +6,15 @@ public abstract class Person {
 	protected World myWorld;
 	protected Location myLocation;
 	protected Color myColor;
+	protected int myTsi;
 	protected int myType;
 	protected int myAge;
 	protected boolean alive;
 	
-	
-	
-	
-	public Person(World myWorld, Location myLocation) {
+	public Person(Location myLocation, World myWorld) {
 		super();
-		this.myWorld = myWorld;
 		this.myLocation = myLocation;
+		this.myWorld = myWorld;
 		this.myAge = (int)(Math.random()*3);
 		alive = true;
 	}
