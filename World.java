@@ -14,14 +14,54 @@ public class World {
 	}
 	
 	public void letTimePass(World theWorld){
-//		makeMovements();
+		makeMovements(theWorld);
 		spread(theWorld);
 //		purgeTheDead();		
 	}
 	
-//	public void makeMovements() {
-//		
-//	}
+	public void makeMovements(World theWorld) {
+		for(int i=0; i<popList.size(); i++) {
+			if(popList.get(i).getMyType()!=0) {
+				int x = popList.get(i).getMyLocation().getX();
+				int y = popList.get(i).getMyLocation().getY();
+				double num = Math.random();
+				if(num<0.25) {
+					if(checkSpot(x,y-1,i)==true && y>0) {
+						popList.get(i).getMyLocation().setY(y-1);
+					}
+				}
+				if(num>=0.25 && num<0.5) {
+					if(checkSpot(x+1,y,i)==true && x<width-1) {
+						popList.get(i).getMyLocation().setX(x+1);
+					}
+				}
+				if(num>=0.5 && num<0.75) {
+					if(checkSpot(x,y+1,i)==true && y<(height-1)) {
+						popList.get(i).getMyLocation().setY(y+1);
+					}
+				}
+				if(num>=0.75) {
+					if(checkSpot(x-1,y,i)==true && x>0) {
+						popList.get(i).getMyLocation().setX(x-1);
+					}
+				}
+			}
+		}
+	}
+	
+	public boolean checkSpot(int x, int y, int i) {
+		for(int j=0; j<i; j++) {
+			if(popList.get(j).getMyLocation().getX()==x && popList.get(j).getMyLocation().getY()==y) {
+				return false;
+			}
+		}
+		for(int k=i+1; k<popList.size(); k++) {
+			if(popList.get(k).getMyLocation().getX()==x && popList.get(k).getMyLocation().getY()==y) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	public void spread(World theWorld) {
 		for(int i=0; i<popList.size(); i++) {
@@ -72,6 +112,36 @@ public class World {
 		}
 	}
 	
+	public void swapHealthy(int x, int y, int j, World theWorld) {
+		double prob = Math.random();
+		int age = popList.get(j).getMyAge();
+		popList.remove(j);
+		if(age==0) {
+			if(prob<0.2) {
+				popList.add(new InfectedSymptomatic(new Location(x,y),theWorld));
+			}
+			else {
+				popList.add(new InfectedAsymptomatic(new Location(x,y),theWorld));
+			}
+		}
+		if(age==1) {
+			if(prob<0.6) {
+				popList.add(new InfectedSymptomatic(new Location(x,y),theWorld));
+			}
+			else {
+				popList.add(new InfectedAsymptomatic(new Location(x,y),theWorld));
+			}
+		}
+		if(age==2) {
+			if(prob<0.95) {
+				popList.add(new InfectedSymptomatic(new Location(x,y),theWorld));
+			}
+			else {
+				popList.add(new InfectedAsymptomatic(new Location(x,y),theWorld));
+			}
+		}
+	}
+	
 	public void purgeTheDead(){
 		int i=0;
 		while(i<popList.size()){
@@ -105,35 +175,5 @@ public class World {
 	public String toString() {
 		return "World [width=" + width + ", height=" + height
 				+ ", popList=" + popList + "]";
-	}
-	
-	public void swapHealthy(int x, int y, int j, World theWorld) {
-		double prob = Math.random();
-		int age = popList.get(j).getMyAge();
-		popList.remove(j);
-		if(age==0) {
-			if(prob<0.2) {
-				popList.add(new InfectedSymptomatic(new Location(x,y),theWorld));
-			}
-			else {
-				popList.add(new InfectedAsymptomatic(new Location(x,y),theWorld));
-			}
-		}
-		if(age==1) {
-			if(prob<0.6) {
-				popList.add(new InfectedSymptomatic(new Location(x,y),theWorld));
-			}
-			else {
-				popList.add(new InfectedAsymptomatic(new Location(x,y),theWorld));
-			}
-		}
-		if(age==2) {
-			if(prob<0.95) {
-				popList.add(new InfectedSymptomatic(new Location(x,y),theWorld));
-			}
-			else {
-				popList.add(new InfectedAsymptomatic(new Location(x,y),theWorld));
-			}
-		}
 	}
 }

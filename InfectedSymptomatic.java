@@ -8,9 +8,4 @@ public class InfectedSymptomatic extends Person {
 		this.myType = 0;
 		this.myTsi = 0;
 	}
-	
-	public void move() {
-		
-	}
-
 }

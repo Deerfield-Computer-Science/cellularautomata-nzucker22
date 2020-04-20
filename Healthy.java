@@ -7,8 +7,4 @@ public class Healthy extends Person {
 		this.myColor = Color.LIGHT_GRAY;
 		this.myType = 2;
 	}
-	
-	public void move() {
-		
-	}
 }

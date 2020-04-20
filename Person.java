@@ -29,8 +29,6 @@ public abstract class Person {
 		alive = true;
 	}
 	
-	public abstract void move();
-	
 	public boolean isDead(){
 		return !alive;
 	}

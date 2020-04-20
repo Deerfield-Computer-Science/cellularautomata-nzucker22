@@ -8,8 +8,8 @@ public class WorldController extends GraphicsProgram {
 	
 	private World theWorld;
 	private GCanvas theWorldCanvas;
-	public static final int APPLICATION_WIDTH = 200;
-	public static final int APPLICATION_HEIGHT = 200;
+	public static final int APPLICATION_WIDTH = 1000;
+	public static final int APPLICATION_HEIGHT = 1000;
 	
 	public void run(){	
 		setUpWorld();
@@ -21,26 +21,31 @@ public class WorldController extends GraphicsProgram {
 	}
 	
 	public void setUpWorld(){
-		theWorld = new World(20,20);
-		theWorld.getpopList().add( new Healthy( new Location(3,6), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(4,6), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(1,1), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(5,6), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(2,6), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(4,9), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(3,7), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(8,1), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(6,5), theWorld ));
-		theWorld.getpopList().add( new Healthy( new Location(7,7), theWorld ));
-		theWorld.getpopList().add( new InfectedAsymptomatic( new Location(6,6), theWorld ));
+		theWorld = new World(60,60);
+		double num = Math.random();
+		double num2 = Math.random();
+		int x1 = (int)(num*theWorld.getWidth());
+		int y1 = (int)(num2*theWorld.getHeight());
+		theWorld.getpopList().add( new InfectedAsymptomatic( new Location(x1,y1), theWorld ));
+		for(int i=0; i<45; i++) {
+			double num0 = Math.random();
+			double num1 = Math.random();
+			int x = (int)(num0*theWorld.getWidth());
+			int y = (int)(num1*theWorld.getHeight());
+			for(int j=0; j<i; j++) {
+				if(theWorld.getpopList().get(j).getMyLocation().getX()!=x || theWorld.getpopList().get(j).getMyLocation().getY()!=y) {
+					theWorld.getpopList().add( new Healthy( new Location(x,y), theWorld ));
+				}
+			}
+		}
 		theWorldCanvas = this.getGCanvas();
 	}
 	
 	public void runWorld(){
 		drawWorld();
-		for(int i=0; i<1;i++){
+		for(int i=0; i<50;i++){
 			theWorld.letTimePass(theWorld);
-			pause(1000);
+			pause(400);
 			drawWorld();
 		}
 	}	

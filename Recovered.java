@@ -7,9 +7,4 @@ public class Recovered extends Person {
 		this.myColor = Color.GREEN;
 		this.myType = 3;
 	}
-	
-	public void move() {
-		
-	}
-
 }
