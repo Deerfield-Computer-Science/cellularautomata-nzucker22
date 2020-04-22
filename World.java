@@ -13,11 +13,13 @@ public class World {
 		this.popList = new ArrayList<Person>();
 	}
 	
-	public void letTimePass(World theWorld){
+	public int letTimePass(World theWorld){
 		makeMovements(theWorld);
-		spread(theWorld);
+		int numNewInfections = spread(theWorld);
 		tickTime(theWorld);
-//		purgeTheDead();	
+		recoverOrDie(theWorld);
+		purgeTheDead();
+		return numNewInfections;
 	}
 	
 	public void makeMovements(World theWorld) {
@@ -64,56 +66,66 @@ public class World {
 		return true;
 	}
 	
-	public void spread(World theWorld) {
+	public int spread(World theWorld) {
+		int numNewInfections = 0;
 		for(int i=0; i<popList.size(); i++) {
 			if(popList.get(i).getMyType()==0 || popList.get(i).getMyType()==1) {
 				for(int j=0; j<popList.size(); j++) {
 					int x1 = popList.get(i).getMyLocation().getX()-1;
 					int y1 = popList.get(i).getMyLocation().getY()-1;
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x1 && popList.get(j).getMyLocation().getY()==y1) {
-							swapHealthy(x1,y1,j,theWorld);	
+							infect(x1,y1,j,theWorld);
+							numNewInfections++;
 						}
 					int x2 = popList.get(i).getMyLocation().getX();
 					int y2 = popList.get(i).getMyLocation().getY()-1;
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x2 && popList.get(j).getMyLocation().getY()==y2) {
-							swapHealthy(x2,y2,j,theWorld);	
+							infect(x2,y2,j,theWorld);	
+							numNewInfections++;
 						}
 					int x3 = popList.get(i).getMyLocation().getX()+1;
 					int y3 = popList.get(i).getMyLocation().getY()-1;
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x3 && popList.get(j).getMyLocation().getY()==y3) {
-							swapHealthy(x3,y3,j,theWorld);	
+							infect(x3,y3,j,theWorld);
+							numNewInfections++;
 						}
 					int x4 = popList.get(i).getMyLocation().getX()-1;
 					int y4 = popList.get(i).getMyLocation().getY();
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x4 && popList.get(j).getMyLocation().getY()==y4) {
-							swapHealthy(x4,y4,j,theWorld);	
+							infect(x4,y4,j,theWorld);
+							numNewInfections++;
 						}
 					int x5 = popList.get(i).getMyLocation().getX()+1;
 					int y5 = popList.get(i).getMyLocation().getY();
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x5 && popList.get(j).getMyLocation().getY()==y5) {
-							swapHealthy(x5,y5,j,theWorld);	
+							infect(x5,y5,j,theWorld);
+							numNewInfections++;
 						}
 					int x6 = popList.get(i).getMyLocation().getX()-1;
 					int y6 = popList.get(i).getMyLocation().getY()+1;
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x6 && popList.get(j).getMyLocation().getY()==y6) {
-							swapHealthy(x6,y6,j,theWorld);	
+							infect(x6,y6,j,theWorld);
+							numNewInfections++;
 						}
 					int x7 = popList.get(i).getMyLocation().getX();
 					int y7 = popList.get(i).getMyLocation().getY()+1;
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x7 && popList.get(j).getMyLocation().getY()==y7) {
-							swapHealthy(x7,y7,j,theWorld);	
+							infect(x7,y7,j,theWorld);	
+							numNewInfections++;
 						}
 					int x8 = popList.get(i).getMyLocation().getX()+1;
 					int y8 = popList.get(i).getMyLocation().getY()+1;
 						if(popList.get(j).getMyType()==2 && popList.get(j).getMyLocation().getX()==x8 && popList.get(j).getMyLocation().getY()==y8) {
-							swapHealthy(x8,y8,j,theWorld);	
+							infect(x8,y8,j,theWorld);	
+							numNewInfections++;
 						}
 				}
 			}
 		}
+		return numNewInfections;
 	}
 	
-	public void swapHealthy(int x, int y, int j, World theWorld) {
+	public void infect(int x, int y, int j, World theWorld) {
 		double prob = Math.random();
 		int age = popList.get(j).getMyAge();
 		popList.remove(j);
@@ -143,6 +155,56 @@ public class World {
 		}
 	}
 	
+	public void tickTime(World theWorld) {
+		for(int i=0; i<popList.size(); i++) {
+			if(popList.get(i).getMyType()==0 || popList.get(i).getMyType()==1) {
+				popList.get(i).setMyTsi(popList.get(i).getMyTsi()+1);
+			}
+		}
+	}
+	
+	public void recoverOrDie(World theWorld) {
+		for(int i=0; i<popList.size(); i++) {
+			int x = popList.get(i).getMyLocation().getX();
+			int y = popList.get(i).getMyLocation().getY();
+			double prob = Math.random();
+			if(popList.get(i).getMyType()==0 && popList.get(i).getMyTsi()>10) {
+				if(popList.get(i).getMyAge()==0) {
+					if(prob<0.02) {
+						popList.get(i).alive = false;
+					}
+					else {
+						becomeImmune(x,y,i,theWorld);
+					}
+				}
+				if(popList.get(i).getMyAge()==1) {
+					if(prob<0.2) {
+						popList.get(i).alive = false;
+					}
+					else {
+						becomeImmune(x,y,i,theWorld);
+					}
+				}
+				if(popList.get(i).getMyAge()==2) {
+					if(prob<0.6) {
+						popList.get(i).alive = false;
+					}
+					else {
+						becomeImmune(x,y,i,theWorld);
+					}
+				}
+			}
+			if(popList.get(i).getMyType()==1 && popList.get(i).getMyTsi()>10) {
+				becomeImmune(x,y,i,theWorld);
+			}
+		}
+	}
+	
+	public void becomeImmune(int x, int y, int i, World theWorld) {
+		popList.remove(i);
+		popList.add(new Recovered(new Location(x,y),theWorld));
+	}
+	
 	public void purgeTheDead(){
 		int i=0;
 		while(i<popList.size()){
@@ -152,19 +214,6 @@ public class World {
 				i++;
 		}	
 	}
-	
-	public void tickTime(World theWorld) {
-		for(int i=0; i<popList.size(); i++) {
-			if(popList.get(i).getMyType()==0 || popList.get(i).getMyType()==1) {
-				popList.get(i).setMyTsi(popList.get(i).getMyTsi()+1);
-			}
-		}
-	}
-	
-	
-	
-	
-	
 	
 	
 	public int getWidth() {

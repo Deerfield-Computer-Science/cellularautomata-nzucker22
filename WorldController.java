@@ -15,6 +15,11 @@ public class WorldController extends GraphicsProgram {
 	GLabel infLabel;
 	GLabel symLabel;
 	GLabel immLabel;
+	GLabel deaLabel;
+	GLabel dtrLabel;
+	GLabel ctcLabel;
+	int origPop;
+	int totalCases;
 	
 	public void run(){	
 		setUpWorld();
@@ -30,41 +35,56 @@ public class WorldController extends GraphicsProgram {
 		theWorldCanvas = this.getGCanvas();
 		itrLabel = new GLabel("Iteration #",(double)(theWorld.getWidth()*10+10),15);
 		itrLabel.setColor(Color.DARK_GRAY);
-		popLabel = new GLabel("Population:",(double)(theWorld.getWidth()*10+10),35);
+		popLabel = new GLabel("Population:",(double)(theWorld.getWidth()*10+10),55);
 		popLabel.setColor(Color.BLACK);
-		infLabel = new GLabel("Total Cases:",(double)(theWorld.getWidth()*10+10),55);
-		infLabel.setColor(Color.ORANGE);
-		symLabel = new GLabel("Percent symptomatic:",(double)(theWorld.getWidth()*10+10),75);
+		ctcLabel = new GLabel("Current cases:",(double)(theWorld.getWidth()*10+10),75);
+		ctcLabel.setColor(Color.ORANGE);
+		infLabel = new GLabel("Total Cases:",(double)(theWorld.getWidth()*10+10),95);
+		infLabel.setColor(Color.BLACK);
+		symLabel = new GLabel("Percent symptomatic:",(double)(theWorld.getWidth()*10+10),175);
 		symLabel.setColor(Color.RED);
-		immLabel = new GLabel("Percent of population with immunity:",(double)(theWorld.getWidth()*10+10),95);
+		immLabel = new GLabel("Percent of population with immunity:",(double)(theWorld.getWidth()*10+10),195);
 		immLabel.setColor(Color.GREEN);
+		deaLabel = new GLabel("Deaths:",(double)(theWorld.getWidth()*10+10),135);
+		deaLabel.setColor(Color.BLACK);
+		dtrLabel = new GLabel("Death Rate:",(double)(theWorld.getWidth()*10+10),155);
+		dtrLabel.setColor(Color.BLACK);
 		theWorldCanvas.add(itrLabel);
 		theWorldCanvas.add(popLabel);
 		theWorldCanvas.add(infLabel);
 		theWorldCanvas.add(symLabel);
 		theWorldCanvas.add(immLabel);
+		theWorldCanvas.add(deaLabel);
+		theWorldCanvas.add(dtrLabel);
+		theWorldCanvas.add(ctcLabel);
 		double num = Math.random();
 		double num2 = Math.random();
 		int x1 = (int)(num*theWorld.getWidth());
 		int y1 = (int)(num2*theWorld.getHeight());
 		theWorld.getpopList().add( new InfectedAsymptomatic( new Location(x1,y1), theWorld ));
-		for(int i=0; i<45; i++) {
+		for(int i=0; i<1000; i++) {
 			double num0 = Math.random();
 			double num1 = Math.random();
 			int x = (int)(num0*theWorld.getWidth());
 			int y = (int)(num1*theWorld.getHeight());
-			for(int j=0; j<i; j++) {
-				if(theWorld.getpopList().get(j).getMyLocation().getX()!=x || theWorld.getpopList().get(j).getMyLocation().getY()!=y) {
-					theWorld.getpopList().add( new Healthy( new Location(x,y), theWorld )); 
+			boolean found = false;
+			for(int j=0; j<theWorld.getpopList().size(); j++) {
+				if(theWorld.getpopList().get(j).getMyLocation().getX()==x && theWorld.getpopList().get(j).getMyLocation().getY()==y) {
+					found = true;
 				}
 			}
+			if(found==false) {
+				theWorld.getpopList().add( new Healthy( new Location(x,y), theWorld )); 
+			}
 		}
+		origPop = theWorld.getpopList().size();
 	}
 	
 	public void runWorld(){
 		drawWorld();
 		for(int i=0; i<200;i++){
-			theWorld.letTimePass(theWorld);
+			int n = theWorld.letTimePass(theWorld);
+			totalCases += n;
 			recordData(i);
 			pause(300);
 			drawWorld();
@@ -98,18 +118,18 @@ public class WorldController extends GraphicsProgram {
 	public void recordData(int itr) {
 		int pop = theWorld.getpopList().size();
 		int healthy = 0;
-		int totInfected = 0;
+		int currentInfected = 0;
 		int infAsympt = 0;
 		int infSympt = 0;
 		int immune = 0;
 		for(int i=0; i<theWorld.getpopList().size(); i++) {
 			if(theWorld.getpopList().get(i).getMyType()==0) {
 				infSympt++;
-				totInfected++;
+				currentInfected++;
 			}
 			if(theWorld.getpopList().get(i).getMyType()==1) {
 				infAsympt++;
-				totInfected++;
+				currentInfected++;
 			}
 			if(theWorld.getpopList().get(i).getMyType()==2) {
 				healthy++;
@@ -120,14 +140,20 @@ public class WorldController extends GraphicsProgram {
 		}
 		String iteration = "Iteration #  "+itr+"";
 		String population = "Population: "+pop+"";
-		String infections = "Total cases: "+totInfected+"";
-		String symptomatic = "Percent symptomatic: "+(int)(((double)infSympt/(double)totInfected)*100)+"%";
+		String infections = "Total cases: "+totalCases+"";
+		String symptomatic = "Percent symptomatic: "+(int)(((double)infSympt/(double)currentInfected)*100)+"%";
 		String immunity = "Percent of population with immunity: "+(int)(((double)immune/(double)pop)*100)+"%";
+		String deaths = "Deaths: "+(origPop-pop)+"";
+		String deathRate = "Death Rate: "+(int)(((double)(origPop-pop)/(double)totalCases)*100)+"%";
+		String currentCases = "Current cases: "+currentInfected+"";
 		itrLabel.setLabel(iteration);
 		popLabel.setLabel(population);
 		infLabel.setLabel(infections);
 		symLabel.setLabel(symptomatic);
 		immLabel.setLabel(immunity);
+		deaLabel.setLabel(deaths);
+		dtrLabel.setLabel(deathRate);
+		ctcLabel.setLabel(currentCases);
 	}
 	
 }
