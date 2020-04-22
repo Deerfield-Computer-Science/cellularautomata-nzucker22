@@ -57,6 +57,14 @@ public abstract class Person {
 		this.myColor = myColor;
 	}
 
+	public int getMyTsi() {
+		return myTsi;
+	}
+
+	public void setMyTsi(int myTsi) {
+		this.myTsi = myTsi;
+	}
+
 	public int getMyType() {
 		return myType;
 	}

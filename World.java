@@ -16,7 +16,8 @@ public class World {
 	public void letTimePass(World theWorld){
 		makeMovements(theWorld);
 		spread(theWorld);
-//		purgeTheDead();		
+		tickTime(theWorld);
+//		purgeTheDead();	
 	}
 	
 	public void makeMovements(World theWorld) {
@@ -151,6 +152,20 @@ public class World {
 				i++;
 		}	
 	}
+	
+	public void tickTime(World theWorld) {
+		for(int i=0; i<popList.size(); i++) {
+			if(popList.get(i).getMyType()==0 || popList.get(i).getMyType()==1) {
+				popList.get(i).setMyTsi(popList.get(i).getMyTsi()+1);
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	public int getWidth() {
 		return width;
