@@ -23,8 +23,9 @@ public class World {
 	}
 	
 	public void makeMovements(World theWorld) {
+		int movements = 0;
 		for(int i=0; i<popList.size(); i++) {
-			if(popList.get(i).getMyType()!=0) {
+			if(popList.get(i).getMyType()!=0 && i%2==0) {
 				int x = popList.get(i).getMyLocation().getX();
 				int y = popList.get(i).getMyLocation().getY();
 				double num = Math.random();
@@ -48,8 +49,10 @@ public class World {
 						popList.get(i).getMyLocation().setX(x-1);
 					}
 				}
+				movements++;
 			}
 		}
+		System.out.println(movements);
 	}
 	
 	public boolean checkSpot(int x, int y, int i) {
