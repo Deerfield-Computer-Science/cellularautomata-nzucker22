@@ -113,7 +113,7 @@ public class WorldController extends GraphicsProgram {
 			totalCases += n;
 			recordData();
 			updateGraph();
-			pause(300);
+			pause(100);
 			drawWorld();
 			prevCases = cases;
 		}
