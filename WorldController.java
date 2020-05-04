@@ -48,6 +48,14 @@ public class WorldController extends GraphicsProgram {
 		GLine yAxis = new GLine(originX,originY,originX,20);
 		theWorldCanvas.add(xAxis);
 		theWorldCanvas.add(yAxis);
+		GLine eightyTick = new GLine(originX-5,originY-80,originX+5,originY-80);
+		GLine hundredtwentyTick = new GLine(originX-5,originY-120,originX+5,originY-120);
+		GLine onesixtyTick = new GLine(originX-5,originY-160,originX+5,originY-160);
+		GLine twohundredTick = new GLine(originX-5,originY-200,originX+5,originY-200);
+		theWorldCanvas.add(eightyTick);
+		theWorldCanvas.add(hundredtwentyTick);
+		theWorldCanvas.add(onesixtyTick);
+		theWorldCanvas.add(twohundredTick);
 	}
 	
 	public void createLabels() {
@@ -109,7 +117,7 @@ public class WorldController extends GraphicsProgram {
 		prevCases = 0;
 		while(cases>0){
 			iteration++;
-			int n = theWorld.letTimePass(theWorld);
+			int n = theWorld.letTimePass(theWorld, cases);
 			totalCases += n;
 			recordData();
 			updateGraph();
@@ -192,14 +200,28 @@ public class WorldController extends GraphicsProgram {
 			 plot = new GLine (originX+iteration,originY-cases,originX+iteration,originY-cases);
 			 prevX = originX+iteration;
 			 prevY = originY-cases;
-			 plot.setColor(Color.RED);
+			 plot.setColor(Color.BLACK);
 			 theWorldCanvas.add(plot);
 		}
 		else {
 			plot = new GLine (prevX,prevY,prevX+2,prevY-(cases-prevCases));
 			prevX = prevX+2;
 			prevY = prevY-(cases-prevCases);
-			plot.setColor(Color.RED);
+			if(cases<=80) {
+				plot.setColor(Color.GREEN);
+			}
+			if(cases>80 && cases<=120) {
+				plot.setColor(Color.BLUE);
+			}
+			if(cases>120 && cases<160) {
+				plot.setColor(Color.GRAY);
+			}
+			if(cases>160 && cases<=200) {
+				plot.setColor(Color.BLACK);
+			}
+			else if(cases>200) {
+				plot.setColor(Color.RED);
+			}
 			theWorldCanvas.add(plot);
 		}
 	}

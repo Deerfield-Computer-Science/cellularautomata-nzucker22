@@ -13,11 +13,11 @@ public class World {
 		this.popList = new ArrayList<Person>();
 	}
 	
-	public int letTimePass(World theWorld){
+	public int letTimePass(World theWorld, int cases){
 		makeMovements(theWorld);
 		int numNewInfections = spread(theWorld);
 		tickTime(theWorld);
-		recoverOrDie(theWorld);
+		recoverOrDie(theWorld, cases);
 		purgeTheDead();
 		return numNewInfections;
 	}
@@ -25,7 +25,7 @@ public class World {
 	public void makeMovements(World theWorld) {
 		int movements = 0;
 		for(int i=0; i<popList.size(); i++) {
-			if(popList.get(i).getMyType()!=0 && i%1==0) {
+			if(popList.get(i).getMyType()!=0 && i%1==0) { 
 				int x = popList.get(i).getMyLocation().getX();
 				int y = popList.get(i).getMyLocation().getY();
 				double num = Math.random();
@@ -166,14 +166,28 @@ public class World {
 		}
 	}
 	
-	public void recoverOrDie(World theWorld) {
+	public void recoverOrDie(World theWorld, int cases) {
+		double multiplier = 1;
+		if(cases>80 && cases<=120) {
+			multiplier = 1.1;
+		}
+		if(cases>120 && cases<160) {
+			multiplier = 1.2;
+		}
+		if(cases>160 && cases<=200) {
+			multiplier = 1.3;
+		}
+		else if(cases>200) {
+			multiplier = 1.6;
+		}
+		
 		for(int i=0; i<popList.size(); i++) {
 			int x = popList.get(i).getMyLocation().getX();
 			int y = popList.get(i).getMyLocation().getY();
 			double prob = Math.random();
 			if(popList.get(i).getMyType()==0 && popList.get(i).getMyTsi()>10) {
 				if(popList.get(i).getMyAge()==0) {
-					if(prob<0.02) {
+					if(prob<0.02*multiplier) {
 						popList.get(i).alive = false;
 					}
 					else {
@@ -181,7 +195,7 @@ public class World {
 					}
 				}
 				if(popList.get(i).getMyAge()==1) {
-					if(prob<0.2) {
+					if(prob<0.2*multiplier) {
 						popList.get(i).alive = false;
 					}
 					else {
@@ -189,7 +203,7 @@ public class World {
 					}
 				}
 				if(popList.get(i).getMyAge()==2) {
-					if(prob<0.6) {
+					if(prob<0.6*multiplier) {
 						popList.get(i).alive = false;
 					}
 					else {
