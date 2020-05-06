@@ -93,7 +93,7 @@ public class WorldController extends GraphicsProgram {
 		int y1 = 10;
 		theWorld.getpopList().add( new InfectedAsymptomatic( new Location(x1,y1), theWorld ));
 		cases = 1;
-		for(int i=0; i<1000; i++) {
+		while(true) {
 			double num0 = Math.random();
 			double num1 = Math.random();
 			int x = (int)(num0*theWorld.getWidth());
@@ -106,6 +106,9 @@ public class WorldController extends GraphicsProgram {
 			}
 			if(found==false) {
 				theWorld.getpopList().add( new Healthy( new Location(x,y), theWorld )); 
+			}
+			if(theWorld.getpopList().size()==850) {
+				break;
 			}
 		}
 		origPop = theWorld.getpopList().size();
@@ -121,7 +124,7 @@ public class WorldController extends GraphicsProgram {
 			totalCases += n;
 			recordData();
 			updateGraph();
-			pause(100);
+			pause(80);
 			drawWorld();
 			prevCases = cases;
 		}
@@ -214,10 +217,10 @@ public class WorldController extends GraphicsProgram {
 				plot.setColor(Color.BLUE);
 			}
 			if(cases>120 && cases<160) {
-				plot.setColor(Color.GRAY);
+				plot.setColor(Color.BLACK);
 			}
 			if(cases>160 && cases<=200) {
-				plot.setColor(Color.BLACK);
+				plot.setColor(Color.ORANGE);
 			}
 			else if(cases>200) {
 				plot.setColor(Color.RED);
