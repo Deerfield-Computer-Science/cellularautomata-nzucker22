@@ -6,6 +6,7 @@ public abstract class Person {
 	protected World myWorld;
 	protected Location myLocation;
 	protected Color myColor;
+	//edit
 	protected int myTsi;
 	protected int myType;
 	protected int myAge;
